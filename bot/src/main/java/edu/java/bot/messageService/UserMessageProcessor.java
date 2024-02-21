@@ -16,15 +16,18 @@ public class UserMessageProcessor implements MessageProcessor {
     private final static String NO_SUCH_COMMAND = "No such command. Try /help.";
     private final CommandRepo commands;
 
-    @Autowired public UserMessageProcessor(CommandRepo commands) {
+    @Autowired
+    public UserMessageProcessor(CommandRepo commands) {
         this.commands = commands;
     }
 
-    @Override public List<Command> commands() {
+    @Override
+    public List<Command> commands() {
         return commands.getCommands();
     }
 
-    @Override public SendMessage process(Update update) {
+    @Override
+    public SendMessage process(Update update) {
         Optional<Command> command = commands.getCommands().stream().filter(temp -> temp.supports(update)).findAny();
         if (command.isPresent()) {
             return command.get().handle(update);

@@ -12,6 +12,9 @@ public interface Command {
     SendMessage handle(Update update);
 
     default boolean supports(Update update) {
+        if (update == null || update.message() == null) {
+            return false;
+        }
         var parts = update.message().text().split("\\s+", 2);
         return parts[0].equals(command());
     }

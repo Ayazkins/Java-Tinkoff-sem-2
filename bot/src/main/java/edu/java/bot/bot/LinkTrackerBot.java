@@ -26,6 +26,13 @@ public class LinkTrackerBot implements Bot {
         this.messageProcessor = messageProcessor;
     }
 
+    @Override
+    @PostConstruct
+    public void start() {
+        telegramBot.setUpdatesListener(this);
+        this.execute(menu());
+    }
+
     public SetMyCommands menu() {
         List<Command> commandList = messageProcessor.commands();
         BotCommand[] commands = new BotCommand[commandList.size()];
@@ -48,13 +55,6 @@ public class LinkTrackerBot implements Bot {
             }
         }
         return CONFIRMED_UPDATES_ALL;
-    }
-
-    @Override
-    @PostConstruct
-    public void start() {
-        telegramBot.setUpdatesListener(this);
-        this.execute(menu());
     }
 
     @Override

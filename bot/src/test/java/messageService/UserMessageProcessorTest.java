@@ -8,7 +8,7 @@ import edu.java.bot.commands.Command;
 import edu.java.bot.commands.CommandRepo;
 import edu.java.bot.messageService.MessageProcessor;
 import edu.java.bot.messageService.UserMessageProcessor;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
@@ -22,6 +22,7 @@ public class UserMessageProcessorTest {
     private final static Chat CHAT = mock(Chat.class);
 
     private final Command COMMAND = mock(Command.class);
+
 
     @Test
     public void messageProcessorTest() {

@@ -1,14 +1,18 @@
-package edu.java.bot.commands;
+package commands;
 
 import com.pengrad.telegrambot.model.Chat;
 import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.commands.Command;
+import edu.java.bot.commands.CommandRepo;
+import edu.java.bot.commands.HelpCommand;
+import edu.java.bot.commands.TrackCommand;
 import edu.java.bot.parsers.GitHubParser;
 import edu.java.bot.parsers.LinksValidator;
 import edu.java.bot.repository.UserRepository;
-import org.junit.Test;
 import java.util.List;
+import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

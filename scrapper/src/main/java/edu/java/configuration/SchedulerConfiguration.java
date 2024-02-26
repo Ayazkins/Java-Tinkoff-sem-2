@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 @Log4j2
 public class SchedulerConfiguration {
-    @Scheduled(fixedDelayString = "${app.scheduler.interval}")
+    @Scheduled(fixedDelayString = "#{@interval.toMillis()}")
     public void update() {
         log.info("Updating");
     }

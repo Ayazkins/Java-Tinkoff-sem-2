@@ -16,6 +16,7 @@ public record ApplicationConfig(
     public Duration interval() {
         return scheduler.interval();
     }
+
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {
     }
 }

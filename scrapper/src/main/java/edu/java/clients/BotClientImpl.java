@@ -14,6 +14,7 @@ public class BotClientImpl implements BotClient {
     public BotClientImpl() {
         webClient = WebClient.create(BOT_URL);
     }
+
     public BotClientImpl(String url) {
         webClient = WebClient.create(url);
     }

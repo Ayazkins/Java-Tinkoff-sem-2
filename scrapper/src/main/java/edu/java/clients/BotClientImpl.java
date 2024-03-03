@@ -14,6 +14,7 @@ public class BotClientImpl implements BotClient {
     public BotClientImpl() {
         webClient = WebClient.create(BOT_URL);
     }
+
     @Override
     public String update(LinkUpdateRequest linkUpdateRequest) {
         return webClient

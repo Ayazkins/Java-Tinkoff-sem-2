@@ -7,6 +7,7 @@ import edu.java.bot.responses.ListLinksResponse;
 
 public interface ScrapperClient {
     String registerChat(Long id);
+
     String deleteChat(Long id);
 
     ListLinksResponse getLinks(Long id);

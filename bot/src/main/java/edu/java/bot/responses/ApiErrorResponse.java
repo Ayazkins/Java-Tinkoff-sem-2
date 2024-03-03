@@ -6,9 +6,9 @@ import java.util.List;
 public record ApiErrorResponse(
     String description,
     String code,
-    String exception,
-    String message,
-    List<String> stackTrace
+    String exceptionName,
+    String exceptionMessage,
+    List<String> stacktrace
 ) {
     public static ApiErrorResponse create(String description, String code, Exception exception) {
         return new ApiErrorResponse(

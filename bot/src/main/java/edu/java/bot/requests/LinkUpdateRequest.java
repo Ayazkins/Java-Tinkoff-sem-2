@@ -7,13 +7,13 @@ import java.util.List;
 
 public record LinkUpdateRequest(
     @NotNull(message = "chat id can not be null")
-    Long chatId,
+    Long id,
     @NotBlank(message = "url should not be blank")
     String url,
 
     String description,
     @NotEmpty(message = "list of tg chat id should not be empty")
-    List<Long> tgChatIdList
+    List<Long> tgChatIds
 
 ) {
 }

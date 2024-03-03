@@ -5,9 +5,11 @@ import edu.java.bot.requests.RemoveLinkRequest;
 import edu.java.bot.responses.LinkResponse;
 import edu.java.bot.responses.ListLinksResponse;
 import org.springframework.http.HttpMethod;
+import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+@Component
 public class ScrapperClientImpl implements ScrapperClient {
 
     private final static String SCRAPPER_URL = "https://localhost:8080";
@@ -20,6 +22,10 @@ public class ScrapperClientImpl implements ScrapperClient {
 
     public ScrapperClientImpl() {
         webClient = WebClient.create(SCRAPPER_URL);
+    }
+
+    public ScrapperClientImpl(String url) {
+        webClient = WebClient.create(url);
     }
 
     @Override

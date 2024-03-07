@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/tg-chat")
-public class CharController {
+public class ChatController {
     @PostMapping("/{id}")
     public ResponseEntity<String> createChat(@PathVariable("id") Long chatId) {
         return ResponseEntity.ok("chat is created");

@@ -5,6 +5,7 @@ import edu.java.entity.Link;
 import edu.java.repository.ChatLinkRepository;
 import edu.java.repository.ChatRepository;
 import edu.java.repository.LinkRepository;
+import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,7 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class ChatLinkRepositoryImplTest {
+class ChatLinkRepositoryImplTest extends IntegrationTest {
 
     @Autowired
     private ChatLinkRepository chatLinkRepository;

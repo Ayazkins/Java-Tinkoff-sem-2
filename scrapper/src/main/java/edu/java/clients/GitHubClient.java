@@ -1,11 +1,15 @@
 package edu.java.clients;
 
 import edu.java.data.GitHubData;
+import edu.java.data.GitHubEventsData;
+import edu.java.data.Update;
 import edu.java.entity.Link;
-import java.time.OffsetDateTime;
+import java.util.List;
 
 public interface GitHubClient {
     GitHubData checkRepo(String owner, String repo);
 
-    OffsetDateTime checkForUpdate(Link link);
+    List<GitHubEventsData> checkEvents(String owner, String repo);
+
+    Update checkForUpdate(Link link);
 }

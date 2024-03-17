@@ -1,31 +1,29 @@
-package edu.java.repository.impl;
+package edu.java.repository.jooq;
 
 import edu.java.entity.Chat;
 import edu.java.entity.Link;
-import edu.java.repository.ChatLinkRepository;
-import edu.java.repository.ChatRepository;
-import edu.java.repository.LinkRepository;
-import edu.java.scrapper.IntegrationTest;
+import edu.java.repository.impl.ChatLinkRepositoryImpl;
+import edu.java.repository.impl.ChatRepositoryImpl;
+import edu.java.repository.impl.LinkRepositoryImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.OffsetDateTime;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class ChatLinkRepositoryImplTest extends IntegrationTest {
+public class JooqChatLinkRepositoryTest {
+    @Autowired
+    private JooqChatLinkRepository chatLinkRepository;
 
     @Autowired
-    private ChatLinkRepositoryImpl chatLinkRepository;
+    private JooqLinkRepository linkRepository;
 
     @Autowired
-    private LinkRepositoryImpl linkRepository;
-
-    @Autowired
-    private ChatRepositoryImpl chatRepository;
+    private JooqChatRepository chatRepository;
 
     Link link = new Link(1L, "test.com", null, null);
     Chat chat = new Chat(1L);

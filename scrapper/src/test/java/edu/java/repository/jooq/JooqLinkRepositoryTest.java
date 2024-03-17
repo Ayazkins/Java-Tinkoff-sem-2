@@ -1,4 +1,4 @@
-package edu.java.repository.impl;
+package edu.java.repository.jooq;
 
 import edu.java.entity.Link;
 import edu.java.repository.LinkRepository;
@@ -12,9 +12,9 @@ import java.time.OffsetDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class LinkRepositoryImplTest extends IntegrationTest {
+class JooqLinkRepositoryTest extends IntegrationTest {
     @Autowired
-    private LinkRepositoryImpl linkRepository;
+    private JooqLinkRepository linkRepository;
     @Test
     @Transactional
     @Rollback

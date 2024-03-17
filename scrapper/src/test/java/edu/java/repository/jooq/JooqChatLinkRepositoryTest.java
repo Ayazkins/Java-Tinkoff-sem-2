@@ -5,6 +5,7 @@ import edu.java.entity.Link;
 import edu.java.repository.impl.ChatLinkRepositoryImpl;
 import edu.java.repository.impl.ChatRepositoryImpl;
 import edu.java.repository.impl.LinkRepositoryImpl;
+import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class JooqChatLinkRepositoryTest {
+public class JooqChatLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JooqChatLinkRepository chatLinkRepository;
 

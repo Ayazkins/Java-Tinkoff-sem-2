@@ -8,32 +8,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
+import static edu.java.repository.impl.repositoryQuery.LinkQuery.DELETE;
+import static edu.java.repository.impl.repositoryQuery.LinkQuery.FIND;
+import static edu.java.repository.impl.repositoryQuery.LinkQuery.FIND_DATE;
+import static edu.java.repository.impl.repositoryQuery.LinkQuery.SAVE;
+import static edu.java.repository.impl.repositoryQuery.LinkQuery.UPDATE;
 
 @RequiredArgsConstructor
 @Repository
 public class LinkRepositoryImpl implements LinkRepository {
-
-    private static final String SAVE = """
-        insert into link (url) values (?)
-        """;
-
-    private final static String DELETE = """
-        delete from link where url = (?)
-        """;
-
-    private static final String FIND = """
-        select * from link where url = ?
-        """;
-
-    private static final String FIND_DATE = """
-        select id, url, last_checked, last_updated from link where last_checked < ?
-        """;
-
-    private static final String UPDATE = """
-        update link set last_checked = ?, last_updated = ?
-        where url = ?;
-        """;
     public static final String URL = "url";
     public static final String LAST_CHECKED = "last_checked";
     public static final String LAST_UPDATED = "last_updated";

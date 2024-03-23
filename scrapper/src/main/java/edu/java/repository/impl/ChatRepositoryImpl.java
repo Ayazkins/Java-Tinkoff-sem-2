@@ -6,22 +6,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import static edu.java.repository.impl.repositoryQuery.ChatQuery.DELETE;
+import static edu.java.repository.impl.repositoryQuery.ChatQuery.FIND;
+import static edu.java.repository.impl.repositoryQuery.ChatQuery.SAVE;
 
 @Repository
 @RequiredArgsConstructor
 public class ChatRepositoryImpl implements ChatRepository {
 
-    private static final String SAVE = """
-        insert into chat (id) values (?)
-        """;
-
-    private static final String DELETE = """
-        delete from chat where id = (?)
-        """;
-
-    private static final String FIND = """
-        select id from chat where id = (?)
-         """;
     private final JdbcTemplate jdbcTemplate;
 
     @Override

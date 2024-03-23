@@ -19,7 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class LinkUpdater implements Updater {
-    private final static OffsetDateTime TIME = OffsetDateTime.now().minusSeconds(10L);
+
+    private final static Long TIME = 10L;
 
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
@@ -31,7 +32,8 @@ public class LinkUpdater implements Updater {
     @Transactional
     public int update() {
         int count = 0;
-        List<Link> links = linkRepository.findAllLinksCheckedLongAgo(TIME);
+        OffsetDateTime checkTime = OffsetDateTime.now().minusMinutes(TIME);
+        List<Link> links = linkRepository.findAllLinksCheckedLongAgo(checkTime);
         for (Link link : links) {
             String host;
             try {

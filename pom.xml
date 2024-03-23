@@ -15,6 +15,8 @@
         <maven.version>3.8.6</maven.version>
         <jdk.version>21</jdk.version>
         <java.release>21</java.release>
+        <jooq.version>3.19.6</jooq.version>
+
 
         <revision>0.1</revision>
 
@@ -43,11 +45,14 @@
         <!-- Linters -->
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <checkstyle.version>10.12.7</checkstyle.version>
+        <org.jooq.version>3.19.6</org.jooq.version>
+        <spring-boot-starter-jooq.version>3.2.3</spring-boot-starter-jooq.version>
     </properties>
 
     <modules>
         <module>bot</module>
         <module>scrapper</module>
+        <module>scrapper-jooq</module>
     </modules>
 
     <dependencyManagement>
@@ -122,6 +127,24 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-jooq</artifactId>
+            <version>${spring-boot-starter-jooq.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-codegen-maven</artifactId>
+            <version>${org.jooq.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jooq</groupId>
+            <artifactId>jooq-meta-extensions-liquibase</artifactId>
+            <version>${org.jooq.version}</version>
         </dependency>
     </dependencies>
 

@@ -1,10 +1,10 @@
 package edu.java.clients;
 
 import edu.java.data.StackOverflowDataList;
+import edu.java.data.Update;
 import edu.java.entity.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.time.OffsetDateTime;
 import org.springframework.web.reactive.function.client.WebClient;
 
 public class StackOverflowClientImpl implements StackOverflowClient {
@@ -29,13 +29,13 @@ public class StackOverflowClientImpl implements StackOverflowClient {
     }
 
     @Override
-    public OffsetDateTime checkForUpdate(Link link) {
+    public Update checkForUpdate(Link link) {
         try {
             URI uri = new URI(link.getUrl());
             String[] parsedLink = uri.getPath().split("/");
             Long id = Long.parseLong(parsedLink[parsedLink.length - 2]);
             StackOverflowDataList stackOverflowData = checkQuestions(id);
-            return stackOverflowData.infoList().getFirst().date();
+            return new Update(stackOverflowData.infoList().getFirst().date(), "update");
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(link + " is incorrect");
         }

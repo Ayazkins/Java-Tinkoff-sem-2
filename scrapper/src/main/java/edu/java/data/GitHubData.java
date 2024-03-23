@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 public record GitHubData(
-    @JsonProperty("updated_at")
+    @JsonProperty("updatedAt")
     OffsetDateTime time,
 
     @JsonProperty("name")

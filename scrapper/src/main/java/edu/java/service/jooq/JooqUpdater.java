@@ -1,13 +1,14 @@
-package edu.java.service;
+package edu.java.service.jooq;
 
 import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.data.Update;
 import edu.java.entity.Link;
-import edu.java.repository.impl.ChatLinkRepositoryImpl;
-import edu.java.repository.impl.LinkRepositoryImpl;
+import edu.java.repository.jooq.JooqChatLinkRepository;
+import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.requests.LinkUpdateRequest;
+import edu.java.service.Updater;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.OffsetDateTime;
@@ -16,24 +17,23 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Service
 @RequiredArgsConstructor
-public class LinkUpdater implements Updater {
-
-    private final static Long TIME = 10L;
+public class JooqUpdater implements Updater {
+    private final static OffsetDateTime TIME = OffsetDateTime.now().minusSeconds(10L);
 
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
-    private final ChatLinkRepositoryImpl chatLinkRepository;
+    private final JooqChatLinkRepository chatLinkRepository;
     private final BotClient botClient;
-    private final LinkRepositoryImpl linkRepository;
+    private final JooqLinkRepository linkRepository;
 
     @Override
     @Transactional
     public int update() {
         int count = 0;
-        OffsetDateTime checkTime = OffsetDateTime.now().minusMinutes(TIME);
-        List<Link> links = linkRepository.findAllLinksCheckedLongAgo(checkTime);
+        List<Link> links = linkRepository.findAllLinksCheckedLongAgo(TIME);
         for (Link link : links) {
             String host;
             try {

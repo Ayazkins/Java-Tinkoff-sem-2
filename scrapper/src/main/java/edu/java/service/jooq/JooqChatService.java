@@ -1,15 +1,16 @@
-package edu.java.service;
+package edu.java.service.jooq;
 
 import edu.java.entity.Chat;
-import edu.java.repository.impl.ChatRepositoryImpl;
+import edu.java.repository.jooq.JooqChatRepository;
+import edu.java.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-public class JdbcChatService implements ChatService {
-    private final ChatRepositoryImpl chatRepository;
+public class JooqChatService implements ChatService {
+    private final JooqChatRepository chatRepository;
 
     @Override
     @Transactional

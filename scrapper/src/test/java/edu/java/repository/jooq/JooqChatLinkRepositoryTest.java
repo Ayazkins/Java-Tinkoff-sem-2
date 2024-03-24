@@ -1,10 +1,7 @@
 package edu.java.repository.jooq;
 
-import edu.java.entity.Chat;
-import edu.java.entity.Link;
-import edu.java.repository.impl.ChatLinkRepositoryImpl;
-import edu.java.repository.impl.ChatRepositoryImpl;
-import edu.java.repository.impl.LinkRepositoryImpl;
+import edu.java.entity.jdbc.Chat;
+import edu.java.entity.jdbc.Link;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

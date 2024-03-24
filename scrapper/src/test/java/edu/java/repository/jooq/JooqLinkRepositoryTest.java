@@ -1,7 +1,6 @@
 package edu.java.repository.jooq;
 
-import edu.java.entity.Link;
-import edu.java.repository.LinkRepository;
+import edu.java.entity.jdbc.Link;
 import edu.java.scrapper.IntegrationTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

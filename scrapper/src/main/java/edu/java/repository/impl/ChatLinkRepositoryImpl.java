@@ -1,6 +1,6 @@
 package edu.java.repository.impl;
 
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.ChatLinkRepository;
 import java.time.OffsetDateTime;
 import java.util.List;

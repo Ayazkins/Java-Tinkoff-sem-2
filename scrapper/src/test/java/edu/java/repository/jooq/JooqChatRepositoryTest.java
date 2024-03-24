@@ -1,16 +1,13 @@
 package edu.java.repository.jooq;
 
-import edu.java.entity.Chat;
-import edu.java.repository.ChatRepository;
+import edu.java.entity.jdbc.Chat;
 import edu.java.scrapper.IntegrationTest;
-import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
-import static edu.java.domain.jooq.Tables.CHAT;
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class JooqChatRepositoryTest extends IntegrationTest {

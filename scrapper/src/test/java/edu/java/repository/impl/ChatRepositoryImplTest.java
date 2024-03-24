@@ -1,10 +1,7 @@
 package edu.java.repository.impl;
 
-import edu.java.entity.Chat;
-import edu.java.repository.ChatLinkRepository;
-import edu.java.repository.ChatRepository;
+import edu.java.entity.jdbc.Chat;
 import edu.java.scrapper.IntegrationTest;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

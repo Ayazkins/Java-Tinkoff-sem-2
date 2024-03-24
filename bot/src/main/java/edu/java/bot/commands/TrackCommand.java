@@ -2,34 +2,30 @@ package edu.java.bot.commands;
 
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
+import edu.java.bot.clients.ScrapperClient;
 import edu.java.bot.parsers.LinksValidator;
-import edu.java.bot.repository.Repository;
+import edu.java.bot.requests.AddLinkRequest;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class TrackCommand implements Command {
     private final static String COMMAND = "/track";
 
-    private final static String DESCRIPTION = "Start tracking tour link";
+    private final static String DESCRIPTION = "Start tracking your link";
 
     private final static String WRONG_LINK = "Wrong link, try another one.";
 
     private final static String SPACE = " - ";
 
-    private final Repository repository;
+    private final ScrapperClient scrapperClient;
 
     private final LinksValidator linksValidator;
-
-    @Autowired
-    public TrackCommand(LinksValidator linksValidator, Repository repository) {
-        this.repository = repository;
-        this.linksValidator = linksValidator;
-    }
 
     @Override
     public String command() {
@@ -48,6 +44,7 @@ public class TrackCommand implements Command {
             try {
                 URL url = new URI(parts[1]).toURL();
                 if (linksValidator.isValid(url)) {
+                    scrapperClient.addLink(update.message().chat().id(), new AddLinkRequest(url.toString()));
                     String ans = DESCRIPTION + " " + parts[1] + "\n";
                     return new SendMessage(update.message().chat().id(), ans);
                 }

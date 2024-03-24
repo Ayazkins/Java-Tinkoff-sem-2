@@ -4,7 +4,7 @@ import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.data.Update;
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.jooq.JooqChatLinkRepository;
 import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.requests.LinkUpdateRequest;
@@ -14,11 +14,9 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Service
 @RequiredArgsConstructor
 public class JooqUpdater implements Updater {
     private final static OffsetDateTime TIME = OffsetDateTime.now().minusSeconds(10L);

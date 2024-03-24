@@ -4,7 +4,7 @@ import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.data.Update;
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.impl.ChatLinkRepositoryImpl;
 import edu.java.repository.impl.LinkRepositoryImpl;
 import edu.java.requests.LinkUpdateRequest;
@@ -13,10 +13,8 @@ import java.net.URL;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class LinkUpdater implements Updater {
 

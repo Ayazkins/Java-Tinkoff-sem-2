@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.java.requests.AddLinkRequest;
 import edu.java.requests.RemoveLinkRequest;
 import edu.java.responses.LinkResponse;
+import edu.java.responses.ListLinksResponse;
 import edu.java.service.LinkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -43,6 +45,7 @@ public class LinksControllerTests {
 
     @Test
     public void testGetLinks() throws Exception {
+        when(linkService.findAll(anyLong())).thenReturn(new ListLinksResponse(new ArrayList<>(), 0));
         mockMvc.perform(get("/links")
                 .header("chatId", 12345))
             .andExpect(status().isOk())
@@ -62,7 +65,7 @@ public class LinksControllerTests {
 
     @Test
     public void testDeleteLink() throws Exception {
-        when(linkService.add(anyLong(), new AddLinkRequest(anyString()))).thenReturn(new LinkResponse(1L, "http://example.com"));
+        when(linkService.remove(anyLong(), new RemoveLinkRequest(anyString()))).thenReturn(new LinkResponse(1L, "http://example.com"));
         RemoveLinkRequest request = new RemoveLinkRequest("http://example.com");
         mockMvc.perform(delete("/links")
                 .header("chatId", 12345)

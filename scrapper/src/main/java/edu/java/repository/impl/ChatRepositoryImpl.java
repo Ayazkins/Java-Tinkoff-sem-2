@@ -1,6 +1,6 @@
 package edu.java.repository.impl;
 
-import edu.java.entity.Chat;
+import edu.java.entity.jdbc.Chat;
 import edu.java.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;

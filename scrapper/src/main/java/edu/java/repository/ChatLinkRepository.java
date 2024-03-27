@@ -1,6 +1,6 @@
 package edu.java.repository;
 
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import java.util.List;
 
 public interface ChatLinkRepository {

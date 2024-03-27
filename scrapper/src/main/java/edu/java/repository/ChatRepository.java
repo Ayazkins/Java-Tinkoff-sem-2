@@ -1,6 +1,6 @@
 package edu.java.repository;
 
-import edu.java.entity.Chat;
+import edu.java.entity.jdbc.Chat;
 
 public interface ChatRepository {
     Chat save(Chat chat);

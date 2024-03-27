@@ -1,8 +1,7 @@
 package edu.java.service.jooq;
 
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.jooq.JooqChatLinkRepository;
-import edu.java.repository.jooq.JooqChatRepository;
 import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.requests.AddLinkRequest;
 import edu.java.requests.RemoveLinkRequest;
@@ -11,16 +10,13 @@ import edu.java.responses.ListLinksResponse;
 import edu.java.service.LinkService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
-@Service
 @RequiredArgsConstructor
 public class JooqLinkService implements LinkService {
     private final JooqLinkRepository linkRepository;
     private final JooqChatLinkRepository chatLinkRepository;
-    private final JooqChatRepository chatRepository;
 
     @Override
     @Transactional

@@ -1,6 +1,6 @@
 package edu.java.service;
 
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.impl.ChatLinkRepositoryImpl;
 import edu.java.repository.impl.LinkRepositoryImpl;
 import edu.java.requests.AddLinkRequest;
@@ -9,11 +9,9 @@ import edu.java.responses.LinkResponse;
 import edu.java.responses.ListLinksResponse;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
-@Service
 public class JdbcLinkService implements LinkService {
     private final LinkRepositoryImpl linkRepository;
 

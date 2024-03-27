@@ -1,12 +1,10 @@
 package edu.java.service;
 
-import edu.java.entity.Chat;
+import edu.java.entity.jdbc.Chat;
 import edu.java.repository.impl.ChatRepositoryImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Service
 @RequiredArgsConstructor
 public class JdbcChatService implements ChatService {
     private final ChatRepositoryImpl chatRepository;

@@ -3,7 +3,7 @@ package edu.java.clients;
 import edu.java.data.GitHubData;
 import edu.java.data.GitHubEventsData;
 import edu.java.data.Update;
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Comparator;

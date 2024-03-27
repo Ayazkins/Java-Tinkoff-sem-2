@@ -2,7 +2,7 @@ package edu.java.clients;
 
 import edu.java.data.StackOverflowDataList;
 import edu.java.data.Update;
-import edu.java.entity.Link;
+import edu.java.entity.jdbc.Link;
 import java.net.URI;
 import java.net.URISyntaxException;
 import org.springframework.web.reactive.function.client.WebClient;

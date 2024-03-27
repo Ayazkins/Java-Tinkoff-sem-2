@@ -3,9 +3,12 @@ package edu.java.service;
 import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
-import edu.java.entity.Link;
+import edu.java.data.Update;
+import edu.java.entity.jdbc.Link;
 import edu.java.repository.ChatLinkRepository;
 import edu.java.repository.LinkRepository;
+import edu.java.repository.impl.ChatLinkRepositoryImpl;
+import edu.java.repository.impl.LinkRepositoryImpl;
 import edu.java.requests.LinkUpdateRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,13 +31,13 @@ class LinkUpdaterTest {
     private StackOverflowClient stackOverflowClient;
 
     @Mock
-    private ChatLinkRepository chatLinkRepository;
+    private ChatLinkRepositoryImpl chatLinkRepository;
 
     @Mock
     private BotClient botClient;
 
     @Mock
-    private LinkRepository linkRepository;
+    private LinkRepositoryImpl linkRepository;
 
     private Updater linkUpdater;
 
@@ -52,7 +55,7 @@ class LinkUpdaterTest {
         links.add(link2);
 
         Mockito.when(linkRepository.findAllLinksCheckedLongAgo(Mockito.any(OffsetDateTime.class))).thenReturn(links);
-        Mockito.when(gitHubClient.checkForUpdate(Mockito.any(Link.class))).thenReturn(OffsetDateTime.now().minusDays(5));
+        Mockito.when(gitHubClient.checkForUpdate(Mockito.any(Link.class))).thenReturn(new Update(OffsetDateTime.now().minusDays(5), "test"));
 
         int count = linkUpdater.update();
 

@@ -2,6 +2,8 @@ package edu.java.controllers;
 
 import edu.java.requests.AddLinkRequest;
 import edu.java.requests.RemoveLinkRequest;
+import edu.java.responses.LinkResponse;
+import edu.java.responses.ListLinksResponse;
 import edu.java.service.LinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,21 +22,18 @@ public class LinksController {
     private final LinkService linkService;
 
     @GetMapping
-    public ResponseEntity<String> getLinks(@RequestHeader long chatId) {
-        linkService.findAll(chatId);
-        return ResponseEntity.ok("links");
+    public ListLinksResponse getLinks(@RequestHeader long chatId) {
+        return linkService.findAll(chatId);
     }
 
     @PostMapping
-    public ResponseEntity<String> addLink(@RequestHeader long chatId, @RequestBody AddLinkRequest request) {
-        linkService.add(chatId, request);
-        return ResponseEntity.ok(request.link() + "is now added");
+    public LinkResponse addLink(@RequestHeader long chatId, @RequestBody AddLinkRequest request) {
+        return linkService.add(chatId, request);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteLink(@RequestHeader long chatId, @RequestBody RemoveLinkRequest request) {
-        linkService.remove(chatId, request);
-        return ResponseEntity.ok(request.link() + " is deleted");
+    public LinkResponse deleteLink(@RequestHeader long chatId, @RequestBody RemoveLinkRequest request) {
+        return linkService.remove(chatId, request);
     }
 
 }

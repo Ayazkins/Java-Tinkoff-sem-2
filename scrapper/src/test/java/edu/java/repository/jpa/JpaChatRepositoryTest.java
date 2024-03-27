@@ -19,7 +19,9 @@ class JpaChatRepositoryTest extends IntegrationTest {
     public void saveTest() {
         Chat chat = Chat.builder().id(1L).build();
         chatRepository.save(chat);
+
         Chat chat1 = chatRepository.findById(1L).get();
+
         assertNotNull(chat1);
         assertEquals(chat1.getId(), 1L);
     }
@@ -29,8 +31,10 @@ class JpaChatRepositoryTest extends IntegrationTest {
     @Rollback
     public void deleteTest() {
         Chat chat = Chat.builder().id(1L).build();
+
         chatRepository.save(chat);
         chatRepository.delete(chat);
+
         assertTrue(chatRepository.findById(1L).isEmpty());
     }
 
@@ -41,10 +45,12 @@ class JpaChatRepositoryTest extends IntegrationTest {
         Chat chat = Chat.builder().id(1L).build();
         Chat chat1 = Chat.builder().id(2L).build();
         Chat chat2 = Chat.builder().id(100L).build();
+
         chatRepository.save(chat);
         chatRepository.save(chat1);
         chatRepository.save(chat2);
         Chat out = chatRepository.findById(100L).get();
+
         assertNotNull(out);
         assertEquals(out.getId(), 100L);
     }

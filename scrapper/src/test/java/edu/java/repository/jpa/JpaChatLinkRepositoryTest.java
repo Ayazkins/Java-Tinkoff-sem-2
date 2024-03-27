@@ -25,8 +25,8 @@ class JpaChatLinkRepositoryTest extends IntegrationTest {
     @Autowired
     private JpaChatRepository chatRepository;
 
-    Link link = Link.builder().id(1L).url("test.com").build();
-    Chat chat = Chat.builder().id(1L).build();
+    private Link link = Link.builder().id(1L).url("test.com").build();
+    private Chat chat = Chat.builder().id(1L).build();
 
     @Test
     @Rollback
@@ -72,6 +72,7 @@ class JpaChatLinkRepositoryTest extends IntegrationTest {
         chatLink.setChat(chat1);
         chatLink.setLink(link1);
         chatLinkRepository.save(chatLink);
+
         var a = chatLinkRepository.findAllLinksByChatId(chat1.getId());
 
         assertEquals(a.getFirst().getId(), link1.getId());
@@ -88,6 +89,7 @@ class JpaChatLinkRepositoryTest extends IntegrationTest {
         chatLink.setChat(chat1);
         chatLink.setLink(link1);
         chatLinkRepository.save(chatLink);
+
         var a = chatLinkRepository.findAllChatIdsByLinkId(link1.getId());
 
         assertEquals(a.getFirst(), chat.getId());

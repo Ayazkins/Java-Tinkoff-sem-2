@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class JpaLinkRepositoryTest extends IntegrationTest {
+    private final static String TEST_URL = "test.com";
     @Autowired
     private JpaLinkRepository linkRepository;
     @Autowired
@@ -21,57 +22,66 @@ class JpaLinkRepositoryTest extends IntegrationTest {
     @Transactional
     @Rollback
     public void addLinkTest() {
-        Link link = Link.builder().url("test.com").id(1L).build();
+        Link link = Link.builder().url(TEST_URL).id(1L).build();
+
         linkRepository.save(link);
-        Link link1 = linkRepository.findByUrl("test.com").get();
-        assertEquals(link1.getUrl(), "test.com");
+        Link link1 = linkRepository.findByUrl(TEST_URL).get();
+
+        assertEquals(link1.getUrl(), TEST_URL);
     }
 
     @Test
     @Transactional
     @Rollback
     public void deleteTest() {
-        Link link = Link.builder().url("test.com").id(1L).build();
+        Link link = Link.builder().url(TEST_URL).id(1L).build();
         linkRepository.save(link);
+
         linkRepository.delete(link);
-        assertTrue(linkRepository.findByUrl("test.com").isEmpty());
+
+        assertTrue(linkRepository.findByUrl(TEST_URL).isEmpty());
     }
 
     @Test
     @Transactional
     @Rollback
     public void findByUrlTest() {
-        Link link = Link.builder().url("test.com").id(1L).build();
+        Link link = Link.builder().url(TEST_URL).id(1L).build();
+
         linkRepository.save(link);
-        assertEquals("test.com", linkRepository.findByUrl("test.com").get().getUrl());
+
+        assertEquals(TEST_URL, linkRepository.findByUrl(TEST_URL).get().getUrl());
     }
 
     @Test
     @Transactional
     @Rollback
     public void findAllLinksCheckedLongTimeAgoTest() {
-        Link link = Link.builder().url("test.com").id(1L).build();
+        Link link = Link.builder().url(TEST_URL).id(1L).build();
         Link link2 = Link.builder().url("test2.com").id(2L).build();
-
         linkRepository.save(link);
         linkRepository.save(link2);
-        linkRepository.update("test.com", OffsetDateTime.now().minusDays(10), OffsetDateTime.now().minusDays(10));
+        linkRepository.update(TEST_URL, OffsetDateTime.now().minusDays(10), OffsetDateTime.now().minusDays(10));
+
         var out = linkRepository.findAllLinksCheckedLongAgo(OffsetDateTime.now().minusDays(1));
+
         assertEquals(out.size(), 1);
-        assertEquals(out.getFirst().getUrl(), "test.com");
+        assertEquals(out.getFirst().getUrl(), TEST_URL);
     }
 
     @Test
     @Transactional
     @Rollback
     public void updateTest() {
-        Link link = Link.builder().url("test.com").id(1L).build();
+        Link link = Link.builder().url(TEST_URL).id(1L).build();
         linkRepository.save(link);
         OffsetDateTime offsetDateTime = OffsetDateTime.now();
-        linkRepository.update("test.com", offsetDateTime, offsetDateTime);
+        linkRepository.update(TEST_URL, offsetDateTime, offsetDateTime);
         entityManager.clear();
-        Link link1 = linkRepository.findByUrl("test.com").get();
-        assertEquals(link1.getUrl(), "test.com");
+
+        Link link1 = linkRepository.findByUrl(TEST_URL).get();
+
+        assertEquals(link1.getUrl(), TEST_URL);
         assertEquals(link1.getLastUpdated().toLocalDate(), offsetDateTime.toLocalDate());
     }
 

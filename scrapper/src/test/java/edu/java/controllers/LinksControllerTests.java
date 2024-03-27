@@ -5,9 +5,11 @@ import edu.java.requests.AddLinkRequest;
 import edu.java.requests.RemoveLinkRequest;
 import edu.java.responses.LinkResponse;
 import edu.java.responses.ListLinksResponse;
+import edu.java.service.JdbcLinkService;
 import edu.java.service.LinkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -43,8 +45,7 @@ public class LinksControllerTests {
         when(linkService.findAll(anyLong())).thenReturn(new ListLinksResponse(new ArrayList<>(), 0));
         mockMvc.perform(get("/links")
                 .header("chatId", 12345))
-            .andExpect(status().isOk())
-            .andExpect(content().string("links"));
+            .andExpect(jsonPath("$.size").value(0));
     }
 
     @Test
@@ -62,11 +63,11 @@ public class LinksControllerTests {
     public void testDeleteLink() throws Exception {
         when(linkService.remove(anyLong(), new RemoveLinkRequest(anyString()))).thenReturn(new LinkResponse(1L, "http://example.com"));
         RemoveLinkRequest request = new RemoveLinkRequest("http://example.com");
-        mockMvc.perform(delete("/links")
+        var a = mockMvc.perform(delete("/links")
                 .header("chatId", 12345)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new ObjectMapper().writeValueAsString(request)))
-            .andExpect(status().isOk())
-            .andExpect(content().string("http://example.com is deleted"));
+            .andExpect(status().isOk());
+        Mockito.verify(linkService, Mockito.times(1)).remove(12345L, new RemoveLinkRequest("http://example.com"));
     }
 }

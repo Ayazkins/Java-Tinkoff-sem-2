@@ -1,6 +1,6 @@
 package edu.java.repository.jooq;
 
-import edu.java.entity.Chat;
+import edu.java.entity.jdbc.Chat;
 import edu.java.repository.ChatRepository;
 import lombok.RequiredArgsConstructor;
 import org.jooq.DSLContext;

@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class ScrapperClientImpl implements ScrapperClient {
 
-    private final static String SCRAPPER_URL = "https://localhost:8080";
+    private final static String SCRAPPER_URL = "http://localhost:8080";
     private final static String LINKS_PATH = "/links";
     private final static String CHAT_PATH = "/tg-chat/{id}";
 

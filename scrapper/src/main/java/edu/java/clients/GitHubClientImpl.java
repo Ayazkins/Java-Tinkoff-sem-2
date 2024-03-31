@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.List;
 import org.springframework.web.reactive.function.client.WebClient;
-
+import reactor.util.retry.Retry;
 
 public class GitHubClientImpl implements GitHubClient {
     private final static String DEFAULT_LINK = "https://api.github.com";
@@ -19,26 +19,33 @@ public class GitHubClientImpl implements GitHubClient {
     private final static String EVENTS = "/repos/{owner}/{repo}/events";
     private final WebClient webClient;
 
-    public GitHubClientImpl() {
+    private final Retry retry;
+
+    public GitHubClientImpl(Retry retry) {
         webClient = WebClient.create(DEFAULT_LINK);
+        this.retry = retry;
     }
 
-    public GitHubClientImpl(String link) {
+    public GitHubClientImpl(String link, Retry retry) {
         webClient = WebClient.create(link);
+        this.retry = retry;
     }
 
     @Override
     public GitHubData checkRepo(String owner, String repo) {
         return webClient.get()
             .uri(METHOD, owner, repo)
-            .retrieve().bodyToMono(GitHubData.class).block();
+            .retrieve().bodyToMono(GitHubData.class)
+            .retryWhen(retry)
+            .block();
     }
 
     @Override
     public List<GitHubEventsData> checkEvents(String owner, String repo) {
         return webClient.get()
             .uri(EVENTS, owner, repo)
-            .retrieve().bodyToFlux(GitHubEventsData.class).collectList().block();
+            .retrieve().bodyToFlux(GitHubEventsData.class).collectList().retryWhen(retry)
+            .block();
     }
 
     @Override

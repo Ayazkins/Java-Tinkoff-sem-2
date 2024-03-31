@@ -3,13 +3,25 @@ app:
     enable: true
     interval: 10s
     force-check-delay: 10s
+  rate-limiter:
+    enable: true
+    limit: 120
+    refill-per-minute: 120
+  retry-specification:
+    back-off-type: exponential
+    max-attempts: 3
+    delay: 10000
+    jitter: 0.5
+    codes: 429, 500, 501, 502, 503, 504
   database-access-type: jdbc
+
 
 spring:
   application:
     name: scrapper
   liquibase:
     enabled: false
+    change-log: classpath:migrations/master.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/scrapper
     username: postgres

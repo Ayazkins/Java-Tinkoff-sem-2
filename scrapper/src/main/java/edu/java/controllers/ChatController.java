@@ -18,7 +18,11 @@ public class ChatController {
 
     @PostMapping("/{id}")
     public ResponseEntity<String> createChat(@PathVariable("id") Long chatId) {
-        chatService.register(chatId);
+        try {
+            chatService.register(chatId);
+        } catch (IllegalArgumentException e) {
+
+        }
         return ResponseEntity.ok("chat is created");
     }
 

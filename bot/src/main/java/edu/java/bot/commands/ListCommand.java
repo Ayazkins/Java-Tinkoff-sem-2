@@ -34,7 +34,7 @@ public class ListCommand implements Command {
     public SendMessage handle(Update update) {
         ListLinksResponse listLinksResponse = scrapperClient.getLinks(update.message().chat().id());
 
-        if (listLinksResponse.links().isEmpty()) {
+        if (listLinksResponse.links() == null || listLinksResponse.links().isEmpty()) {
             return new SendMessage(update.message().chat().id(), NO_LINKS);
         }
         StringBuilder message = new StringBuilder();

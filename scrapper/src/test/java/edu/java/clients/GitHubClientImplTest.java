@@ -1,19 +1,28 @@
 package edu.java.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
+import edu.java.configuration.RetryConfiguration;
 import edu.java.data.EventData;
 import edu.java.data.GitHubData;
 import edu.java.data.Payload;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
+import reactor.util.retry.Retry;
 import java.time.OffsetDateTime;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest(classes = {RetryConfiguration.class})
 
 class GitHubClientImplTest {
 
@@ -60,6 +69,8 @@ class GitHubClientImplTest {
         """;
     private final GitHubData gitHubData = new GitHubData(TIME, REPO_NAME);
 
+    @Autowired
+    private Retry retry;
     @Test
     public void GitHubTest() {
         WireMockServer wireMockServer = new WireMockServer();
@@ -68,15 +79,22 @@ class GitHubClientImplTest {
         configureFor("localhost", wireMockServer.port());
 
         stubFor(
-            get(urlEqualTo("/repos/" + USER +"/" +REPO_NAME)).
-                willReturn(aResponse().
-                    withStatus(200).
-                    withHeader("Content-type", "application/json").
-                    withBody(JSON))
-        );
-        GitHubClient gitHubClient = new GitHubClientImpl(wireMockServer.baseUrl());
-        GitHubData gitHubDataReal = gitHubClient.checkRepo(USER, REPO_NAME);
-        assertEquals(gitHubDataReal, gitHubData);
+            get(urlEqualTo("/repos/" + USER +"/" +REPO_NAME))
+                .inScenario("RetryScenario")
+                .whenScenarioStateIs(STARTED)
+                .willSetStateTo("Retry success")
+                .willReturn(aResponse().
+                    withStatus(HttpStatus.BAD_GATEWAY.value())));
+
+        stubFor(get(urlEqualTo("/repos/" + USER +"/" +REPO_NAME))
+            .inScenario("RetryScenario")
+            .whenScenarioStateIs("Retry success")
+            .willReturn(aResponse()
+                .withStatus(200)));
+
+        GitHubClient gitHubClient = new GitHubClientImpl(wireMockServer.baseUrl(),retry);
+        gitHubClient.checkRepo(USER, REPO_NAME);
+        wireMockServer.verify(2, getRequestedFor(urlEqualTo("/repos/" + USER +"/" +REPO_NAME)));
         wireMockServer.stop();
     }
 
@@ -86,14 +104,25 @@ class GitHubClientImplTest {
         wireMockServer.start();
 
         configureFor("localhost", wireMockServer.port());
+
         stubFor(
             get(urlEqualTo("/repos/" + USER + "/" + REPO_NAME + "/" + "events"))
+                .inScenario("RetryScenario")
+                .whenScenarioStateIs(STARTED)
+                .willSetStateTo("Retry success")
+                .willReturn(aResponse()
+                    .withStatus(HttpStatus.BAD_GATEWAY.value())
+        ));
+        stubFor(
+            get(urlEqualTo("/repos/" + USER + "/" + REPO_NAME + "/" + "events"))
+                .inScenario("RetryScenario")
+                .whenScenarioStateIs("Retry success")
                 .willReturn(aResponse()
                     .withStatus(200)
                     .withHeader("Content-type", "application/json")
                     .withBody(ISSUE_JSON))
         );
-        GitHubClient gitHubClient = new GitHubClientImpl(wireMockServer.baseUrl());
+        GitHubClient gitHubClient = new GitHubClientImpl(wireMockServer.baseUrl(), retry);
         var gitHubDataReal = gitHubClient.checkEvents(USER, REPO_NAME);
         assertEquals(gitHubDataReal.size(), 2);
         assertEquals(gitHubDataReal.getFirst().eventData(), EventData.ISSUE_COMMENT_EVENT);

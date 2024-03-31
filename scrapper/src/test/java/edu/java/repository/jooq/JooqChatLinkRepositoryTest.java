@@ -1,5 +1,6 @@
 package edu.java.repository.jooq;
 
+import edu.java.controllers.ChatController;
 import edu.java.entity.jdbc.Chat;
 import edu.java.entity.jdbc.Link;
 import edu.java.scrapper.IntegrationTest;
@@ -7,10 +8,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @SpringBootTest
 public class JooqChatLinkRepositoryTest extends IntegrationTest {

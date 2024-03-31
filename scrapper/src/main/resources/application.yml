@@ -3,7 +3,7 @@ app:
     enable: true
     interval: 10000
     force-check-delay: 10000
-  database-access-type: jpa
+  database-access-type: jdbc
   rate-limiter:
     enable: true
     limit: 120
@@ -24,13 +24,15 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   jpa:
-    database-platform: org.hibernate.dialect.PostgresSQLDialect
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: none
     properties:
       hibernate:
         show_sql: true
         format_sql: true
+  liquibase:
+    enabled: false
 springdoc:
   swagger-ui:
     path: /swagger-ui.html

@@ -15,8 +15,6 @@
         <maven.version>3.8.6</maven.version>
         <jdk.version>21</jdk.version>
         <java.release>21</java.release>
-        <jooq.version>3.19.6</jooq.version>
-
 
         <revision>0.1</revision>
 
@@ -29,6 +27,7 @@
         <!-- Other -->
         <jetbrains-annotations.version>24.1.0</jetbrains-annotations.version>
         <java-telegram-bot-api.version>7.0.1</java-telegram-bot-api.version>
+        <bucket4j.version>8.10.1</bucket4j.version>
 
         <!-- Tests -->
         <testcontainers.version>1.19.4</testcontainers.version>
@@ -45,8 +44,10 @@
         <!-- Linters -->
         <maven-checkstyle-plugin.version>3.3.1</maven-checkstyle-plugin.version>
         <checkstyle.version>10.12.7</checkstyle.version>
-        <org.jooq.version>3.19.6</org.jooq.version>
-        <spring-boot-starter-jooq.version>3.2.3</spring-boot-starter-jooq.version>
+
+        <!-- DataBase -->
+        <liquibase.version>4.26.0</liquibase.version>
+        <jooq.version>3.19.6</jooq.version>
     </properties>
 
     <modules>
@@ -91,15 +92,17 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <dependency>
+                <groupId>com.bucket4j</groupId>
+                <artifactId>bucket4j-core</artifactId>
+                <version>${bucket4j.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.3.0</version>
-        </dependency>
         <dependency>
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
@@ -128,23 +131,10 @@
             <artifactId>junit-jupiter-params</artifactId>
             <scope>test</scope>
         </dependency>
-
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jooq</artifactId>
-            <version>${spring-boot-starter-jooq.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-codegen-maven</artifactId>
-            <version>${org.jooq.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.jooq</groupId>
-            <artifactId>jooq-meta-extensions-liquibase</artifactId>
-            <version>${org.jooq.version}</version>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -310,6 +300,7 @@
                         </dependency>
                     </dependencies>
                     <configuration>
+                        <excludes>**/generated/**</excludes>
                         <configLocation>checkstyle.xml</configLocation>
                         <suppressionsLocation>checkstyle-suppressions.xml</suppressionsLocation>
                         <consoleOutput>true</consoleOutput>

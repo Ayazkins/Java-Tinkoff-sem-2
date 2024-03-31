@@ -7,13 +7,11 @@ import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class LimitServiceImpl implements LimitService {
-    @Autowired
     private final ApplicationConfig applicationConfig;
     private final Map<String, Bucket> cache = new ConcurrentHashMap<>();
 

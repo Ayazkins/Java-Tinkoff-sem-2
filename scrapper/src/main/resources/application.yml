@@ -1,38 +1,40 @@
 app:
   scheduler:
     enable: true
-    interval: 10s
-    force-check-delay: 10s
+    interval: 10000
+    force-check-delay: 10000
+  database-access-type: jpa
   rate-limiter:
     enable: true
     limit: 120
     refill-per-minute: 120
   retry-specification:
-    back-off-type: exponential
+    back-off-type: fixed
     max-attempts: 3
     delay: 10000
     jitter: 0.5
     codes: 429, 500, 501, 502, 503, 504
-  database-access-type: jdbc
-
 
 spring:
   application:
     name: scrapper
-  liquibase:
-    enabled: false
-    change-log: classpath:migrations/master.xml
   datasource:
     url: jdbc:postgresql://localhost:5432/scrapper
     username: postgres
     password: postgres
-    driverClassName: org.postgresql.Driver
-
-server:
-  port: 8080
-
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgresSQLDialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
 springdoc:
   swagger-ui:
-    path: /swagger-ui
+    path: /swagger-ui.html
+server:
+  port: 8080
 logging:
   config: classpath:log4j2-plain.xml

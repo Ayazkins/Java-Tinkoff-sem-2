@@ -19,11 +19,20 @@ public record ApplicationConfig(
 
     RateLimiter rateLimiter,
 
-    RetrySpecification retrySpecification
+    RetrySpecification retrySpecification,
+
+    @NotNull
+    Topic updatesTopic,
+
+    boolean useQueue
+
 ) {
     @Bean
     public Duration interval() {
         return scheduler.interval();
+    }
+
+    public record Topic(String name, int replicas, int partitions) {
     }
 
     public record Scheduler(boolean enable, @NotNull Duration interval, @NotNull Duration forceCheckDelay) {

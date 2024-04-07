@@ -1,6 +1,5 @@
 package edu.java.service.jpa;
 
-import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.data.Update;
@@ -8,6 +7,7 @@ import edu.java.entity.hibernate.Link;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaLinkRepository;
 import edu.java.requests.LinkUpdateRequest;
+import edu.java.service.MessageUpdater;
 import edu.java.service.Updater;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,7 +23,7 @@ public class JpaLinkUpdater implements Updater {
 
     private final StackOverflowClient stackOverflowClient;
 
-    private final BotClient botClient;
+    private final MessageUpdater messageUpdater;
 
     private final JpaChatLinkRepository chatLinkRepository;
 
@@ -54,7 +54,7 @@ public class JpaLinkUpdater implements Updater {
             }
 
             if (lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
-                botClient.update(new LinkUpdateRequest(
+                messageUpdater.send(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),
                     lastUpdated.message(),

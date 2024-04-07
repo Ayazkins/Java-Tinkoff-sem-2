@@ -8,21 +8,34 @@ import java.util.Set;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;
 
-
-
 @Validated
 @ConfigurationProperties(prefix = "app", ignoreUnknownFields = false)
 public record ApplicationConfig(
     @NotEmpty
     String telegramToken,
     RateLimiter rateLimiter,
-    RetrySpecification retrySpecification
+    RetrySpecification retrySpecification,
+
+    @NotNull
+    Topic dlqTopic,
+
+    @NotNull
+    Topic updateTopic
 ) {
+
+    public record Topic(
+        String name,
+        int replicas,
+        int partitions
+    ) {
+    }
+
     public record RateLimiter(
         boolean enable,
         @NotNull Integer limit,
         @NotNull Integer refillPerMinute
-    ) { }
+    ) {
+    }
 
     public record RetrySpecification(
         @NotNull BackoffType backOffType,

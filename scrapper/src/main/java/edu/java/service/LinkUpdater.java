@@ -1,6 +1,5 @@
 package edu.java.service;
 
-import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.data.Update;
@@ -23,7 +22,7 @@ public class LinkUpdater implements Updater {
     private final GitHubClient gitHubClient;
     private final StackOverflowClient stackOverflowClient;
     private final ChatLinkRepositoryImpl chatLinkRepository;
-    private final BotClient botClient;
+    private final MessageUpdater messageUpdater;
     private final LinkRepositoryImpl linkRepository;
 
     @Override
@@ -48,7 +47,7 @@ public class LinkUpdater implements Updater {
             }
 
             if (lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
-                botClient.update(new LinkUpdateRequest(
+                messageUpdater.send(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),
                     lastUpdated.message(),

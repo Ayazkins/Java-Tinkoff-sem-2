@@ -34,7 +34,7 @@ class LinkUpdaterTest {
     private ChatLinkRepositoryImpl chatLinkRepository;
 
     @Mock
-    private BotClient botClient;
+    private MessageUpdater botClient;
 
     @Mock
     private LinkRepositoryImpl linkRepository;
@@ -61,7 +61,7 @@ class LinkUpdaterTest {
 
         assertEquals(count, 1);
         Mockito.verify(gitHubClient, Mockito.times(2)).checkForUpdate(Mockito.any(Link.class));
-        Mockito.verify(botClient, Mockito.times(1)).update(Mockito.any(LinkUpdateRequest.class));
+        Mockito.verify(botClient, Mockito.times(1)).send(Mockito.any(LinkUpdateRequest.class));
         Mockito.verify(linkRepository, Mockito.times(2)).update(Mockito.anyString(), Mockito.any(OffsetDateTime.class), Mockito.any(OffsetDateTime.class));
     }
 }

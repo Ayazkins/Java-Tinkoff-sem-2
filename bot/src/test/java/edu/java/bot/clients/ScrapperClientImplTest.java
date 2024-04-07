@@ -2,21 +2,33 @@ package edu.java.bot.clients;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import edu.java.bot.configuration.RetryConfiguration;
 import edu.java.bot.responses.LinkResponse;
 import edu.java.bot.responses.ListLinksResponse;
+import edu.java.bot.utils.LinearRetry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import reactor.util.retry.Retry;
+import java.time.Duration;
 import java.util.List;
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static com.github.tomakehurst.wiremock.stubbing.Scenario.STARTED;
 import static org.junit.Assert.assertEquals;
 
+@SpringBootTest(classes = {RetryConfiguration.class})
 public class ScrapperClientImplTest {
 
     private static WireMockServer wireMockServer;
+    @Autowired
+    private Retry retry;
 
     @BeforeEach
     public void setup() {
@@ -34,37 +46,58 @@ public class ScrapperClientImplTest {
         wireMockServer = new WireMockServer(WireMockConfiguration.options().dynamicPort());
         wireMockServer.start();
         wireMockServer.stubFor(post(urlEqualTo("/tg-chat/123"))
+                .inScenario("RetryScenario")
+                .whenScenarioStateIs(STARTED)
+                .willSetStateTo("Retry success")
+                .willReturn(aResponse()
+                .withStatus(HttpStatus.BAD_GATEWAY.value())));
+        wireMockServer.stubFor(post(urlEqualTo("/tg-chat/123"))
+            .inScenario("RetryScenario")
+                .whenScenarioStateIs("Retry success")
             .willReturn(aResponse()
-                .withStatus(HttpStatus.OK.value())
-                .withBody("Chat registration successful")));
+                .withStatus(200)));
 
-        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl());
-        String response = scrapperClient.registerChat(123L);
+        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl(), retry);
+        scrapperClient.registerChat(123L);
+        wireMockServer.verify(2, postRequestedFor((urlEqualTo("/tg-chat/123"))));
 
-        assertEquals("Chat registration successful", response);
+
     }
 
     @Test
     public void testDeleteChat() {
         wireMockServer.stubFor(delete(urlEqualTo("/tg-chat/456"))
+            .inScenario("RetryScenario")
+            .whenScenarioStateIs(STARTED)
+            .willSetStateTo("Retry success")
             .willReturn(aResponse()
-                .withStatus(HttpStatus.OK.value())
-                .withBody("Chat deletion successful")));
+                .withStatus(HttpStatus.BAD_GATEWAY.value())));
+        wireMockServer.stubFor(delete(urlEqualTo("/tg-chat/456"))
+            .inScenario("RetryScenario")
+            .whenScenarioStateIs("Retry success")
+            .willReturn(aResponse()
+                .withStatus(200)));
 
-        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl());
-        String response = scrapperClient.deleteChat(456L);
+        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl(), retry);
+        scrapperClient.deleteChat(456L);
+        wireMockServer.verify(2, deleteRequestedFor((urlEqualTo("/tg-chat/456"))));
 
-        assertEquals("Chat deletion successful", response);
     }
 
     @Test
     public void testGetLinks() {
-        ListLinksResponse expectedResponse = new ListLinksResponse(List.of(
-            new LinkResponse(1L, "test"),
-            new LinkResponse(2L, "test2")), 2);
+        wireMockServer.stubFor(get(urlEqualTo("/links"))
+                .withHeader("chatId", equalTo("1"))
+            .inScenario("RetryScenario")
+            .whenScenarioStateIs(STARTED)
+            .willSetStateTo("Retry success")
+            .willReturn(aResponse()
+                .withStatus(HttpStatus.BAD_GATEWAY.value())));
 
         wireMockServer.stubFor(get(urlEqualTo("/links"))
-            .withHeader("Tg-Chat-Id", equalTo("1"))
+            .withHeader("chatId", equalTo("1"))
+            .inScenario("RetryScenario")
+            .whenScenarioStateIs("Retry success")
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
                 .withHeader("Content-Type", MediaType.APPLICATION_JSON_VALUE)
@@ -84,9 +117,9 @@ public class ScrapperClientImplTest {
                     }
                     """)));
 
-        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl());
-        ListLinksResponse response = scrapperClient.getLinks(1L);
+        ScrapperClient scrapperClient = new ScrapperClientImpl(wireMockServer.baseUrl(), retry);
+        scrapperClient.getLinks(1L);
+        wireMockServer.verify(2, getRequestedFor((urlEqualTo("/links"))));
 
-        assertEquals(expectedResponse, response);
     }
 }

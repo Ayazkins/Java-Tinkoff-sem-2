@@ -3,37 +3,31 @@ package edu.java.clients;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
+import edu.java.configuration.RetryConfiguration;
 import edu.java.requests.LinkUpdateRequest;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.web.reactive.function.BodyInserters;
-import org.springframework.web.reactive.function.client.WebClient;
-
+import reactor.util.retry.Retry;
 import java.util.List;
-import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.junit.Assert.assertEquals;
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.post;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest(classes = {RetryConfiguration.class})
 public class BotClientImplTest {
 
-    private WireMockServer wireMockServer;
-
-    @Before
-    public void setup() {
-        wireMockServer = new WireMockServer(WireMockConfiguration.options().dynamicPort());
-        wireMockServer.start();
-        WireMock.configureFor("localhost", wireMockServer.port());
-    }
-
-    @After
-    public void tearDown() {
-        wireMockServer.stop();
-    }
+    @Autowired
+    private Retry retry;
 
     @Test
     public void testUpdate() {
+        WireMockServer wireMockServer = new WireMockServer(WireMockConfiguration.options().dynamicPort());
+        wireMockServer.start();
+        WireMock.configureFor("localhost", wireMockServer.port());
         stubFor(post(urlEqualTo("/updates"))
             .willReturn(aResponse()
                 .withStatus(HttpStatus.OK.value())
@@ -46,10 +40,12 @@ public class BotClientImplTest {
         );
 
 
-        BotClient botClient = new BotClientImpl(wireMockServer.baseUrl());
+        BotClient botClient = new BotClientImpl(wireMockServer.baseUrl(), retry);
         String response = botClient.update(linkUpdateRequest);
 
         assertEquals("Update request processed", response);
+        wireMockServer.stop();
+
     }
 
 }

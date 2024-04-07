@@ -17,10 +17,10 @@ public record ApplicationConfig(
     RetrySpecification retrySpecification,
 
     @NotNull
-    Topic dlqTopic,
+    Topic deadLetterQueueTopic,
 
     @NotNull
-    Topic updateTopic
+    Topic updatesTopic
 ) {
 
     public record Topic(

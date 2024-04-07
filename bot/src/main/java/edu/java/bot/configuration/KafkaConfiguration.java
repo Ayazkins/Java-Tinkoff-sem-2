@@ -29,7 +29,7 @@ public class KafkaConfiguration {
 
     @Bean
     public NewTopic dlqTopic(ApplicationConfig applicationConfig) {
-        ApplicationConfig.Topic dlq = applicationConfig.dlqTopic();
+        ApplicationConfig.Topic dlq = applicationConfig.deadLetterQueueTopic();
         return TopicBuilder.name(dlq.name()).replicas(dlq.replicas()).partitions(dlq.partitions()).build();
     }
 }

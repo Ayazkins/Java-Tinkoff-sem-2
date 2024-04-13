@@ -1,11 +1,11 @@
 package edu.java.configuration.access;
 
-import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.repository.jpa.JpaChatLinkRepository;
 import edu.java.repository.jpa.JpaChatRepository;
 import edu.java.repository.jpa.JpaLinkRepository;
+import edu.java.service.MessageUpdater;
 import edu.java.service.jpa.JpaChatService;
 import edu.java.service.jpa.JpaLinkService;
 import edu.java.service.jpa.JpaLinkUpdater;
@@ -43,14 +43,14 @@ public class JpaConfiguration {
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         JpaChatLinkRepository chatLinkRepository,
-        BotClient botClient,
+        MessageUpdater messageUpdater,
         JpaLinkRepository linkRepository
     ) {
         return new JpaLinkUpdater(
             linkRepository,
             gitHubClient,
             stackOverflowClient,
-            botClient,
+            messageUpdater,
             chatLinkRepository
         );
     }

@@ -1,6 +1,5 @@
 package edu.java.configuration.access;
 
-import edu.java.clients.BotClient;
 import edu.java.clients.GitHubClient;
 import edu.java.clients.StackOverflowClient;
 import edu.java.repository.jooq.JooqChatLinkRepository;
@@ -8,6 +7,7 @@ import edu.java.repository.jooq.JooqChatRepository;
 import edu.java.repository.jooq.JooqLinkRepository;
 import edu.java.service.ChatService;
 import edu.java.service.LinkService;
+import edu.java.service.MessageUpdater;
 import edu.java.service.jooq.JooqChatService;
 import edu.java.service.jooq.JooqLinkService;
 import edu.java.service.jooq.JooqUpdater;
@@ -43,14 +43,14 @@ public class JooqConfiguration {
         GitHubClient gitHubClient,
         StackOverflowClient stackOverflowClient,
         JooqChatLinkRepository chatLinkRepository,
-        BotClient botClient,
+        MessageUpdater messageUpdater,
         JooqLinkRepository linkRepository
     ) {
         return new JooqUpdater(
             gitHubClient,
             stackOverflowClient,
             chatLinkRepository,
-            botClient,
+            messageUpdater,
             linkRepository
         );
     }

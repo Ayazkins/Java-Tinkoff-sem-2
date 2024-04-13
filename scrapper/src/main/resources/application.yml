@@ -14,6 +14,11 @@ app:
     delay: 10000
     jitter: 0.5
     codes: 429, 500, 501, 502, 503, 504
+  updates-topic:
+    name: updates
+    replicas: 1
+    partitions: 1
+  use-queue: true
 
 spring:
   application:

@@ -53,7 +53,7 @@ public class JpaLinkUpdater implements Updater {
                 lastUpdated = stackOverflowClient.checkForUpdate(jdbcLink);
             }
 
-            if (lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
+            if (link.getLastUpdated() == null || lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
                 messageUpdater.send(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),

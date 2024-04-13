@@ -54,7 +54,7 @@ public class GitHubClientImpl implements GitHubClient {
             URI uri = new URI(link.getUrl());
             String[] parsedLink = uri.getPath().split("/");
             GitHubData gitHubData = checkRepo(parsedLink[1], parsedLink[2]);
-            if (gitHubData.time().isAfter(link.getLastUpdated())) {
+            if (link.getLastUpdated() == null || gitHubData.time().isAfter(link.getLastUpdated())) {
                 List<GitHubEventsData> eventsData = checkEvents(parsedLink[1], parsedLink[2]);
                 GitHubEventsData lastEvent = eventsData
                     .stream()

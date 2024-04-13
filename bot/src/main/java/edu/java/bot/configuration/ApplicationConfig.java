@@ -15,7 +15,6 @@ public record ApplicationConfig(
     String telegramToken,
     RateLimiter rateLimiter,
     RetrySpecification retrySpecification,
-
     @NotNull
     Topic deadLetterQueueTopic,
 

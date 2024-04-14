@@ -8,6 +8,7 @@ import edu.java.bot.commands.Command;
 import edu.java.bot.commands.CommandRepo;
 import edu.java.bot.messageService.MessageProcessor;
 import edu.java.bot.messageService.UserMessageProcessor;
+import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,6 +24,7 @@ public class UserMessageProcessorTest {
 
     private final Command COMMAND = mock(Command.class);
 
+    private final SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
 
     @Test
     public void messageProcessorTest() {
@@ -35,7 +37,7 @@ public class UserMessageProcessorTest {
         when(COMMAND.supports(UPDATE)).thenCallRealMethod();
         when(COMMAND.handle(UPDATE)).thenReturn(new SendMessage(1, "executed"));
 
-        MessageProcessor messageProcessor = new UserMessageProcessor(COMMAND_REPO);
+        MessageProcessor messageProcessor = new UserMessageProcessor(COMMAND_REPO, meterRegistry);
         SendMessage sendMessage = messageProcessor.process(UPDATE);
 
         assertEquals(sendMessage.getParameters().get("text"), "executed");
@@ -52,7 +54,7 @@ public class UserMessageProcessorTest {
         when(COMMAND.handle(UPDATE)).thenReturn(new SendMessage(1, "executed"));
         when(COMMAND.supports(UPDATE)).thenCallRealMethod();
 
-        MessageProcessor messageProcessor = new UserMessageProcessor(COMMAND_REPO);
+        MessageProcessor messageProcessor = new UserMessageProcessor(COMMAND_REPO, meterRegistry);
         SendMessage sendMessage = messageProcessor.process(UPDATE);
 
         assertEquals(sendMessage.getParameters().get("text"), "No such command. Try /help.");

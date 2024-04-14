@@ -46,7 +46,7 @@ public class LinkUpdater implements Updater {
                 lastUpdated = stackOverflowClient.checkForUpdate(link);
             }
 
-            if (lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
+            if (lastUpdated.updatedAt() != null && lastUpdated.updatedAt().isAfter(link.getLastUpdated())) {
                 messageUpdater.send(new LinkUpdateRequest(
                     link.getId(),
                     link.getUrl(),

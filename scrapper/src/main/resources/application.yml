@@ -3,7 +3,7 @@ app:
     enable: true
     interval: 10000
     force-check-delay: 10000
-  database-access-type: jdbc
+  database-access-type: jpa
   rate-limiter:
     enable: true
     limit: 120
@@ -19,6 +19,19 @@ app:
     replicas: 1
     partitions: 1
   use-queue: true
+management:
+  server:
+    port: 8081
+  metrics:
+    tags:
+      application: ${spring.application.name}
+  endpoints:
+    web:
+      base-path: /
+      exposure:
+        include: "info,health,prometheus"
+      path-mapping:
+        prometheus: "metrics"
 
 spring:
   application:
